@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b3b">
+<title>NOOR — Зікір әлемі</title>
+
+<style>
+:root{
+  --gold:#f5c879;
+  --cream:#fff5df;
+  --glass:rgba(255,255,255,.12);
+  --line:rgba(255,255,255,.24);
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#101b3b}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--cream);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+.scene{
+  position:fixed;inset:0;z-index:-3;
+  background:linear-gradient(180deg,#081735 0%,#28345f 48%,#edaa9d 78%,#283451 100%);
+  transition:background 1s ease;
+}
+.scene:before{
+  content:"";position:absolute;inset:0;
+  background:
+  radial-gradient(circle at 80% 15%,rgba(255,222,166,.18),transparent 18%),
+  radial-gradient(circle at 15% 65%,rgba(255,190,180,.18),transparent 25%),
+  linear-gradient(180deg,rgba(3,10,29,.16),rgba(5,12,34,.42));
+}
+.scene:after{
+  content:"";position:absolute;left:-10%;right:-10%;bottom:-8%;height:38%;
+  background:linear-gradient(160deg,#1d2c50,#111b37 65%);
+  border-radius:50% 50% 0 0/22% 22% 0 0;
+  box-shadow:0 -35px 80px rgba(12,22,53,.25);
+}
+body[data-scene="1"] .scene{
+  background:linear-gradient(180deg,#080f2c 0%,#28376c 52%,#8e7196 78%,#edb6a0 100%);
+}
+body[data-scene="2"] .scene{
+  background:linear-gradient(180deg,#1b2148 0%,#695b88 48%,#f0b58f 78%,#4a4268 100%);
+}
+body[data-scene="3"] .scene{
+  background:linear-gradient(180deg,#06172c 0%,#174e69 48%,#d69a8a 80%,#243c55 100%);
+}
+body[data-scene="4"] .scene{
+  background:linear-gradient(180deg,#211b48 0%,#64558d 48%,#d89bb1 78%,#293253 100%);
+}
+.stars{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:
+  radial-gradient(2px 2px at 12% 14%,#fff 50%,transparent 60%),
+  radial-gradient(1px 1px at 32% 8%,#fff 50%,transparent 60%),
+  radial-gradient(2px 2px at 72% 19%,#ffe8ba 50%,transparent 60%),
+  radial-gradient(1px 1px at 88% 34%,#fff 50%,transparent 60%),
+  radial-gradient(1px 1px at 48% 29%,#fff 50%,transparent 60%),
+  radial-gradient(2px 2px at 20% 44%,#ffe8ba 50%,transparent 60%),
+  radial-gradient(1px 1px at 63% 7%,#fff 50%,transparent 60%);
+  opacity:.8;
+}
+.moon{
+  position:fixed;right:10%;top:13%;width:64px;height:64px;
+  border-radius:50%;box-shadow:-13px 4px 0 0 #ffdc9a;
+  transform:rotate(-25deg);
+  filter:drop-shadow(0 0 14px #ffd68b);
+  opacity:.95;z-index:-1;
+}
+.wrap{
+  width:min(100%,760px);margin:auto;padding:24px 20px 34px;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+header{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:52px;height:52px;border:2px solid var(--gold);
+  border-radius:17px 17px 17px 4px;
+  display:grid;place-items:center;
+  color:var(--gold);font-size:27px;
+  transform:rotate(-3deg);
+}
+.brand-name{
+  font-family:Georgia,serif;
+  font-size:46px;
+  font-weight:700;
+  letter-spacing:7px;
+  color:var(--gold);
+  line-height:1;
+  text-shadow:0 3px 18px rgba(245,200,121,.22);
+}
+.brand-sub{font-size:13px;opacity:.8;margin-top:4px}
+.settings{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.1);
+  color:white;border-radius:30px;
+  padding:10px 15px;font-size:13px;
+  cursor:pointer;
+}
+main{
+  text-align:center;flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;padding-top:35px;
+}
+.arabic{
+  font-family:Georgia,serif;
+  font-size:clamp(42px,9vw,68px);
+  line-height:1.5;margin:8px 0 0;
+  text-shadow:0 3px 18px #1118;
+}
+.ornament{
+  width:min(78%,440px);height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:15px auto 17px;position:relative;
+}
+.ornament:after{
+  content:"✦";position:absolute;left:50%;top:-12px;
+  transform:translateX(-50%);
+  color:var(--gold);font-size:18px;
+}
+h1{
+  font-family:Georgia,serif;
+  font-size:clamp(27px,6vw,36px);
+  margin:0;font-weight:600;
+}
+.translation{font-size:17px;opacity:.78;margin:5px 0 0}
+.counter{
+  width:158px;height:158px;border-radius:50%;
+  margin-top:40px;
+  border:2px solid rgba(255,211,135,.8);
+  background:radial-gradient(circle,rgba(15,26,55,.68),rgba(255,255,255,.09));
+  box-shadow:0 0 0 8px #ffffff0a,0 0 28px #f6c77933;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  position:relative;cursor:pointer;
+  user-select:none;
+}
+.counter:before{
+  content:"";position:absolute;inset:8px;
+  border-radius:50%;border:1px solid #ffffff24;
+}
+.count{
+  font-size:54px;font-weight:650;line-height:1;
+  text-shadow:0 2px 12px #0005;
+  font-variant-numeric:tabular-nums;
+}
+.total{font-size:15px;opacity:.8;margin-top:5px}
+.controls{
+  display:flex;align-items:center;
+  justify-content:center;gap:18px;
+  width:100%;margin-top:26px;
+}
+.circle-btn{
+  width:62px;height:62px;border-radius:50%;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.12);
+  color:white;font-size:24px;cursor:pointer;
+}
+.start-btn{
+  border:1px solid #ffe2a3;
+  background:linear-gradient(135deg,#ffe4a8,#e7a94f);
+  color:#34233a;border-radius:50px;
+  padding:18px 28px;font-size:18px;
+  font-weight:700;min-width:min(58%,260px);
+  box-shadow:0 8px 28px #090f2b55,inset 0 1px #fff9;
+  cursor:pointer;
+}
+button:active,.counter:active{transform:scale(.97)}
+.goal-card{
+  width:100%;max-width:600px;
+  margin-top:28px;padding:17px 18px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;text-align:left;
+  box-shadow:0 12px 30px #080f2b22;
+}
+.goal-card>div{
+  display:flex;align-items:center;
+  gap:12px;justify-content:center;
+}
+.goal-card>div+div{border-left:1px solid var(--line)}
+.gold-icon{font-size:27px;color:var(--gold)}
+.small{font-size:13px;opacity:.75}
+.value{font-size:20px;font-weight:650;margin-top:2px}
+.quote{
+  margin-top:auto;padding:30px 10px 0;
+  font-family:Georgia,serif;
+  font-size:18px;letter-spacing:.2px;
+  text-align:center;
+}
+.quote:before{
+  content:"";display:block;width:75%;height:1px;
+  margin:0 auto 18px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.toast{
+  position:fixed;left:50%;bottom:24px;
+  transform:translate(-50%,20px);opacity:0;
+  background:#172447ee;border:1px solid #ffffff33;
+  border-radius:22px;padding:11px 18px;
+  transition:.25s;pointer-events:none;
+  font-size:14px;max-width:90%;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Телефонға бейімдеу */
+@media(max-width:430px){
+  .wrap{padding:16px 12px 22px}
+  header{gap:8px;align-items:center}
+  .brand{gap:8px;min-width:0}
+  .logo{
+    width:42px;height:42px;font-size:22px;
+    border-radius:14px 14px 14px 4px;
+  }
+  .brand-name{font-size:29px;letter-spacing:3px}
+  .brand-sub{font-size:11px}
+  .settings{
+    padding:8px 9px;font-size:11px;
+    white-space:nowrap;
+  }
+  main{padding-top:24px}
+  .arabic{font-size:clamp(38px,11vw,52px)}
+  .translation{font-size:15px;padding:0 8px}
+  .counter{width:140px;height:140px;margin-top:32px}
+  .count{font-size:48px}
+  .controls{gap:10px;margin-top:22px}
+  .circle-btn{width:52px;height:52px}
+  .start-btn{
+    padding:16px 14px;
+    font-size:16px;min-width:55%;
+  }
+  .goal-card{padding:14px 8px;gap:5px}
+  .goal-card>div{gap:7px}
+  .gold-icon{font-size:22px}
+  .small{font-size:11px}
+  .value{font-size:17px}
+  .quote{font-size:16px;padding-top:25px}
+}
+@media(max-width:350px){
+  .brand-name{font-size:25px;letter-spacing:2px}
+  .logo{width:38px;height:38px}
+  .settings{font-size:10px;padding:7px 8px}
+  .goal-card{grid-template-columns:1fr}
+  .goal-card>div+div{
+    border-left:0;border-top:1px solid var(--line);
+    padding-top:10px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="scene"></div>
+<div class="stars"></div>
+<div class="moon"></div>
+
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="logo">☾</div>
+    <div>
+      <div class="brand-name">NOOR</div>
+      <div class="brand-sub">Зікір әлемі</div>
+    </div>
+  </div>
+  <button class="settings" id="goalBtn" type="button">
+    ⚙ Мақсат: <span id="goalLabel">100</span>
+  </button>
+</header>
+
+<main>
+  <div class="arabic" id="arabic">سُبْحَانَ اللهِ</div>
+  <div class="ornament"></div>
+  <h1 id="zikrName">Субханаллаһ</h1>
+  <div class="translation" id="meaning">
+    Алла барлық кемшіліктен пәк
+  </div>
+
+  <div class="counter" id="counter" role="button"
+       tabindex="0" aria-label="Зікір санын арттыру">
+    <div class="count" id="count">0</div>
+    <div class="total">/<span id="total">100</span></div>
+  </div>
+
+  <div class="controls">
+    <button class="circle-btn" id="minusBtn" type="button">−</button>
+    <button class="start-btn" id="tapBtn" type="button">● &nbsp; Бастау</button>
+    <button class="circle-btn" id="resetBtn" type="button">↻</button>
+  </div>
+
+  <div class="goal-card">
+    <div>
+      <span class="gold-icon">◎</span>
+      <div>
+        <div class="small">Күндік мақсат</div>
+        <div class="value"><span id="goalValue">100</span> рет</div>
+      </div>
+    </div>
+    <div>
+      <span class="gold-icon">✧</span>
+      <div>
+        <div class="small">Бүгінгі нәтиже</div>
+        <div class="value"><span id="todayValue">0</span> рет</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="quote">«Ең жақсы сөз – Алланың зікірі»</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  // Сақталған мәліметтерді қауіпсіз оқу және сақтау
+  function getSaved(key) {
+    try { return localStorage.getItem(key); }
+    catch(e) { return null; }
+  }
+
+  function save(key, value) {
+    try { localStorage.setItem(key, value); }
+    catch(e) {}
+  }
+
+  // Әр кірген сайын фонды ауыстыру
+  const sceneCount = 5;
+  const previous = Number(getSaved('noorLastScene') ?? -1);
+  let scene = Math.floor(Math.random() * sceneCount);
+
+  if(scene === previous) {
+    scene = (scene + 1) % sceneCount;
+  }
+
+  document.body.dataset.scene = scene;
+  save('noorLastScene', scene);
+
+  // Зікірлер
+  const zikrs = [
+    {
+      arabic:'سُبْحَانَ اللهِ',
+      name:'Субханаллаһ',
+      meaning:'Алла барлық кемшіліктен пәк'
+    },
+    {
+      arabic:'الْحَمْدُ لِلَّٰهِ',
+      name:'Әлхамдулиллаһ',
+      meaning:'Барлық мақтау Аллаға тән'
+    },
+    {
+      arabic:'اللّٰهُ أَكْبَرُ',
+      name:'Аллаһу әкбар',
+      meaning:'Алла Ұлы'
+    },
+    {
+      arabic:'أَسْتَغْفِرُ اللّٰهَ',
+      name:'Астағфируллаһ',
+      meaning:'Алладан кешірім сұраймын'
+    }
+  ];
+
+  let zikrIndex = 0;
+  let count = 0;
+  let goal = 100;
+  let started = false;
+
+  const $ = id => document.getElementById(id);
+
+  // Бүгінгі күнді анықтау
+  const now = new Date();
+  const date = [
+    now.getFullYear(),
+    String(now.getMonth()+1).padStart(2,'0'),
+    String(now.getDate()).padStart(2,'0')
+  ].join('-');
+
+  const todayKey = 'noorToday_' + date;
+  let today = Number(getSaved(todayKey) || 0);
+
+  // Экранды жаңарту
+  function render() {
+    $('count').textContent = count;
+    $('total').textContent = goal;
+    $('goalLabel').textContent = goal;
+    $('goalValue').textContent = goal;
+    $('todayValue').textContent = today;
+
+    $('tapBtn').innerHTML = started
+      ? '＋ &nbsp; Зікір санау'
+      : '● &nbsp; Бастау';
+
+    $('arabic').textContent = zikrs[zikrIndex].arabic;
+    $('zikrName').textContent = zikrs[zikrIndex].name;
+    $('meaning').textContent = zikrs[zikrIndex].meaning;
+  }
+
+  // Хабарлама көрсету
+  function showToast(message) {
+    $('toast').textContent = message;
+    $('toast').classList.add('show');
+
+    setTimeout(() => {
+      $('toast').classList.remove('show');
+    }, 2300);
+  }
+
+  // Зікір санау
+  function add() {
+    if(count >= goal) return;
+
+    started = true;
+    count++;
+    today++;
+
+    save(todayKey, today);
+
+    // Әр 33 рет сайын келесі зікірге ауысу
+    if(count % 33 === 0) {
+      zikrIndex = (zikrIndex + 1) % zikrs.length;
+    }
+
+    render();
+
+    if(count === goal) {
+      showToast('Күндік мақсат орындалды! 🌙');
+    }
+  }
+
+  $('tapBtn').addEventListener('click', add);
+  $('counter').addEventListener('click', add);
+
+  $('counter').addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      add();
+    }
+  });
+
+  // Бір санға азайту
+  $('minusBtn').addEventListener('click', () => {
+    if(count > 0) {
+      count--;
+      today = Math.max(0, today - 1);
+
+      save(todayKey, today);
+
+      zikrIndex = Math.floor(count / 33) % zikrs.length;
+      render();
+    }
+  });
+
+  // Қайта бастау
+  $('resetBtn').addEventListener('click', () => {
+    count = 0;
+    started = false;
+    zikrIndex = 0;
+    render();
+  });
+
+  // Мақсатты өзгерту
+  $('goalBtn').addEventListener('click', () => {
+    const answer = prompt(
+      'Күндік мақсатыңды енгіз (33, 99 немесе 100):',
+      String(goal)
+    );
+
+    if(answer === null) return;
+
+    const value = Number(answer);
+
+    if([33, 99, 100].includes(value)) {
+      goal = value;
+      count = Math.min(count, goal);
+      zikrIndex = Math.floor(count / 33) % zikrs.length;
+      render();
+    } else {
+      showToast('33, 99 немесе 100 санын таңда');
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
+
+
+
